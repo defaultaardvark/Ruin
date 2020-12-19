@@ -1,25 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-[RequireComponent (typeof(PlayerMovement), typeof(PlayerJump))]
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     // Calling Referenced Components
-    private PlayerMovement movement;
-    private PlayerJump jump;
+    PlayerControls controls;
+    PlayerMovement movement;
 
     // Creating Serialized Variables
-    [SerializeField] private float speed;
 
     // Creating Controller Variables
-    private float inputX;
-    private float inputY;
+    private Vector2 inputDir;
 
     private void Awake(){
-        movement = GetComponent<PlayerMovement>();
-        jump = GetComponent<PlayerJump>();
+        controls = new PlayerControls();
+        controls.GamePlay.Movement.performed += ctx => move = ctx.ReadValue<Vector2>();
+        controls.GamePlay.Movement.canceled += ctx => move = Vector2.zero;
     }
 
     private void Start()
@@ -29,11 +27,18 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        inputX = Input.GetAxis("Horizontal") * (Time.deltaTime * speed);
-        inputY = Input.GetAxis("Vertical") * (Time.deltaTime * speed);
 
-        movement.Move(inputX, inputY);
-        jump.Jump();
+    }
 
+    private void Move{
+        movement.Move();
+    }
+
+    private void OnEnable(){
+        controls.GamePlay.Enable(); 
+    }
+
+    private void OnDisable(){
+        controls.GamePlay.Disable();
     }
 }

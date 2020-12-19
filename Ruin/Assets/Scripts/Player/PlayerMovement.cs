@@ -8,8 +8,6 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rigidBody;
 
     // Creating Component Variables
-    private float inputX;
-    private float inputY;
 
     private void Awake(){
         rigidBody = GetComponent<Rigidbody2D>();
@@ -18,11 +16,8 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         // Movement Occurs Here
-        rigidBody.velocity = new Vector2(inputX, rigidBody.velocity.y);
     }
 
     public void Move(float dirInputX, float dirInputY){
-        inputX = dirInputX;
-        inputY = dirInputY;
     }
 }
