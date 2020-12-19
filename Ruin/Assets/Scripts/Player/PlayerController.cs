@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof(PlayerMovement))]
+[RequireComponent (typeof(PlayerMovement), typeof(PlayerJump))]
 
 public class PlayerController : MonoBehaviour
 {
     // Calling Referenced Components
     private PlayerMovement movement;
-    private PlayerMovement jump;
+    private PlayerJump jump;
 
     // Creating Serialized Variables
     [SerializeField] private float speed;

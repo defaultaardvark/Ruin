@@ -9,7 +9,7 @@ public class PlayerJump : MonoBehaviour
 
     }
 
-    private void Jump(){
-        
+    public void Jump(){
+
     }
 }
