@@ -16,8 +16,8 @@ public class PlayerController : MonoBehaviour
 
     private void Awake(){
         controls = new PlayerControls();
-        controls.GamePlay.Movement.performed += ctx => move = ctx.ReadValue<Vector2>();
-        controls.GamePlay.Movement.canceled += ctx => move = Vector2.zero;
+        controls.GamePlay.Movement.performed += ctx => inputDir = ctx.ReadValue<Vector2>();
+        controls.GamePlay.Movement.canceled += ctx => inputDir = Vector2.zero;
     }
 
     private void Start()
@@ -28,10 +28,6 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
 
-    }
-
-    private void Move{
-        movement.Move();
     }
 
     private void OnEnable(){
