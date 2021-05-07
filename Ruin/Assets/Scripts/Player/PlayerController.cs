@@ -3,38 +3,61 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent (typeof(PlayerMovement), typeof(PlayerJump))]
+
 public class PlayerController : MonoBehaviour
 {
     // Calling Referenced Components
-    PlayerControls controls;
-    PlayerMovement movement;
+    private PlayerControls controls;
+    private PlayerMovement playerMove;
+    private PlayerJump playerJump;
 
     // Creating Serialized Variables
 
-    // Creating Controller Variables
-    private Vector2 inputDir;
+    // Creating Component Variables
+    private float jumpInput;
+    private bool jumpState;
 
     private void Awake(){
+        Application.targetFrameRate = 300;
+
         controls = new PlayerControls();
-        controls.GamePlay.Movement.performed += ctx => inputDir = ctx.ReadValue<Vector2>();
-        controls.GamePlay.Movement.canceled += ctx => inputDir = Vector2.zero;
+        playerMove = GetComponent<PlayerMovement>();
+        playerJump = GetComponent<PlayerJump>();
+
+        controls.Player.Movement.performed += ctx => Movement(ctx.ReadValue<Vector2>());
+        controls.Player.Movement.canceled += ctx => Movement(Vector2.zero);
+
+        controls.Player.Jump.performed += ctx => jumpInput = ctx.ReadValue<float>();
     }
 
-    private void Start()
-    {
-        Application.targetFrameRate = 300;    
+    private void Update(){
+        if (jumpInput > 0.5f){
+            jumpState = true;
+        }
+        else if (jumpInput < 0.5f){
+            jumpState = false;
+        }
+        Jumping(jumpState);
     }
 
-    private void Update()
-    {
+    private void Movement(Vector2 moveInput){
+        playerMove.Move(moveInput);
+    }
 
+    private void Jumping(bool jumpState){
+        playerJump.Jump(jumpState);
+    }
+
+    private void Attacking(){
+        
     }
 
     private void OnEnable(){
-        controls.GamePlay.Enable(); 
+        controls.Player.Enable(); 
     }
 
     private void OnDisable(){
-        controls.GamePlay.Disable();
+        controls.Player.Disable();
     }
 }
